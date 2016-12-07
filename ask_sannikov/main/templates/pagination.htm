@@ -1,0 +1,12 @@
+
+	<ul class="pagination">
+	{% if paginated.has_previous %}
+		<li><a href="{% url whatami page=paginated.previous_page_number %}">Prev. (page no. {{paginated.previous_page_number}})</a></li>
+	{% endif %}
+	{% if paginated.paginator.num_pages >= 1 %}
+		<li><a href="#">Page {{paginated.number}} of {{paginated.paginator.num_pages}}</a>
+	{% endif %}
+	{% if paginated.has_next %}
+		<li><a href="{% url whatami page=paginated.next_page_number %}">Next. (page no. {{paginated.next_page_number}})</a></li>
+	{% endif %}
+	</ul>

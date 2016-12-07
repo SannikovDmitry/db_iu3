@@ -1,0 +1,184 @@
+.bar{
+     margin-top:5px;
+     margin-bottom:5px;
+}
+
+.ask{
+    margin-top:-1px;
+}
+
+.ask-qestion {
+    margin-top: 30px;
+    border-style: solid;
+    border-width: 1px;
+    padding:5px;
+}
+
+.topName{
+    width: 200px;
+    float:right;
+}
+
+.topName_mt{
+    margin-top:10px;
+}
+
+.spisok{
+    list-style-type: none;
+}
+
+.foto{
+    float:left;
+    margin-right:5%;
+}
+
+.pr{
+    padding-right:5%;
+}
+
+.fl{
+    float:left;
+}
+
+.dl{
+    display: inline;
+}
+
+.ab{
+    clear: both;
+}
+
+.top{
+    width:400px;
+}
+
+.size{
+    font-size:40px;
+
+}
+
+#HQ{
+   padding-top:20px;
+   text-decoration: underline;
+}
+
+.nameQ{
+    text-decoration: underline;
+    font-size:30px;
+    
+}
+
+.td{
+    text-decoration: underline;
+}
+
+.pl{
+    padding-left:0px;
+    font-size:20px;
+}
+
+.title{
+    margin-top:10px;
+    margin-bottom:20px;
+}
+
+.titleb{
+    margin-bottom:20px;
+}
+
+.text{
+    margin-top:30px;
+}
+
+.tags{
+    margin-top:73px;
+
+}
+
+.tagsb{
+    margin-top:20px;
+
+}
+
+.mb{
+    margin-bottom:35px;
+}
+
+.mt{
+     margin-top:5px;
+}
+
+.block{
+    display:block;
+    margin-bottom:35px;
+}
+
+.login{
+    display:block;
+    margin-bottom:35px;
+}
+
+.file{
+         margin-top:25px;
+}
+
+.tag{
+    padding:0px;
+}
+
+.style1{
+    font-size:25px;
+    color:red;
+}
+
+.style2{
+    font-size:15px;
+    color:green;
+}
+
+
+.style3{
+    font-size:15px;
+    color:black;
+}
+
+.style4{
+    font-size:20px;
+    color:#1B00FF;
+}
+
+.ask_question{
+    
+}
+
+.texta{
+    margin-top:25px;
+}
+
+.like{
+	
+	width: 90px;
+	height: 60px;
+}
+
+.fot{
+	height: 60px;
+}
+
+.icon{
+	
+	margin-top:10px;
+	width: 30px;
+	height: 30px;
+
+	
+}
+
+.reit{
+	float:left;
+	font-size:25px;
+	margin-top:25px;
+	padding-right:10px;
+	height: 30px;
+ 	color:green;
+}

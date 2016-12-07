@@ -1,0 +1,46 @@
+{%extends 'base.htm'%}
+{%block content%}		
+
+<div class="col-md-9">
+	<div class="row-sm-1">
+		{%if tag%}
+		<h1>By tag {{tag}} found:</h1><hr></hr>
+		{%endif%}
+		{% for question in questions %}
+		<div class="row ask-question">
+			<div class="col-md-2">
+				<img src="http://lorempixel.com/60/60/" class="img-circle"></br>
+				<p>{{author}}</p>
+				<button class="btn btn-success" type="button" onclick="location = '{% url 'like' question_id=question.id %}'";>
+					L  <span class="badge">{{question.likes}}</span>
+				</button>
+				<button class="btn btn-danger" type="button" onclick="location = '{% url 'dislike' question_id=question.id %}';">
+					D  <span class="badge">{{question.dislikes}}</span>
+				</button>
+			</div>
+			<div class="col-md-10">
+				<a class="question-name" href="{% url 'question' question.id %}">{{ question.title }}</a>
+				<p class="question-text">
+					{{question.text}}
+				</p>
+				<br>
+			</p>
+			<p><a class="question-footer" href="{% url 'question' question_id=question.id %}#answer-form">Answer ({{question.answerCount}})</a>
+				Tags:
+				{% for tag in question.hashtags.all %}
+				{%if tag.tag != " " and tag.tag != "" %} 
+				<a class = "td" href="{{tag.link}}">{{tag}}</a>
+				{%else%}
+				(none)
+				{%endif%}
+				{% endfor %}
+				{% if question.hashtags.count == 0 %}
+				(none)
+				{%endif%}
+			</div>
+		</div>
+		{% endfor %}
+		{% include 'pagination.htm' with paginated=questions %}
+	</div>
+</div>
+{%endblock%}

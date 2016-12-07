@@ -1,0 +1,10 @@
+{%extends 'base.htm'%}
+{%block content%}
+<div class="col-md-9">
+    {% if user.is_authenticated %}
+    <h1>Настройки аккаунта</h1>
+    {% else %}
+    <a href="">Сменить пароль</a>
+{% endif %}
+</div>
+{% endblock %}

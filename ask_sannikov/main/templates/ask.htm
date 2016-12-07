@@ -1,0 +1,32 @@
+﻿{% extends 'base.htm' %}
+{% block content %}	
+		<div class="col-md-9">
+			<h1>Задать новый вопрос
+			{% if saved %}
+			added successfully!</h1>
+			{% else %}
+			</h1>
+			<hr></hr>
+			<form class="form-horizontal" action="{% url 'ask'%}" method="POST">
+			{% csrf_token %}
+				<div class="form-group">
+					<label for="form-1-field" class="col-sm-1 control-label">Вопрос</label>
+					<div class="col-sm-11" id="form-1-field">{{form.title}}</div>
+				</div>
+				<div class="form-group">
+					<label for="form-2-field" class="col-sm-1 control-label">Описание</label>
+					<div class="col-sm-11" id="form-2-field">{{form.text}}</div>
+				</div>
+				<div class="form-group">
+					<label for="form-3-field" class="col-sm-1 control-label">Теги</label>
+					<div class="col-sm-11" id="form-3-field">{{form.tags}}</div>
+				</div>
+				 
+				<div class="col-sm-offset-1">
+					<button class="btn btn-success" type=submit>Спросить!</button>
+				</div>
+			</form>
+			{% endif %}
+			<br>
+		</div>
+{% endblock %}

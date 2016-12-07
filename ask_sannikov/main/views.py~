@@ -1,0 +1,164 @@
+from datetime import datetime
+from django.http import HttpResponse
+from django.template import RequestContext
+from django.shortcuts import get_object_or_404, render
+from models import Question, Answer, Hashtag, Profile, popular_tags, findPage
+from forms import QuestionForm, AnswerForm, RegistrationForm
+
+# Create your views here.
+
+def get_post_params(request):
+    result = ['<p>DJANGO!</p>']
+    result.append('POST:')
+    result.append('<form method="post">')
+    result.append('<input type="text" name = "Text">')
+    result.append('<input type="submit" value="SEND">')
+    result.append('</form>')
+
+    if request.method == 'POST':
+        result.append(request.POST.urlencode())
+
+    if request.method == 'GET':
+        if request.GET.urlencode() != '':
+            result.append('GET:')
+            for key, value in request.GET.items():
+                keyvalue=key+" = "+value
+                result.append(keyvalue)
+
+    return HttpResponse('<br>'.join(result))
+
+def index(request, page):
+	pager = Question.objects.index()
+	context = RequestContext(request, {
+		'popular': popular_tags(),
+		'questions': findPage(pager, page or 1),
+		'pages_total': pager.num_pages,
+		'whatami': 'index',
+	})
+	return render(request, 'index.htm', context)
+	
+def ask(request):
+	saved = False
+	if request.method == "POST":
+		if not request.user.is_authenticated():
+			qForm = QuestionForm(data=request.POST)
+			saved = save_question_from_form(qForm, request.user)
+		else:
+			return render(request, 'message.htm',
+				{'message': 'You must be logged in to post a question!'})
+	else:
+		qForm = QuestionForm()
+		saved = False
+	context = RequestContext(request, {
+		'popular': popular_tags(),
+		'saved': saved,
+		'form': qForm,
+	})
+	return render(request, 'ask.htm', context);
+	
+def login(request):
+	context = RequestContext(request, {
+		'popular': popular_tags(),
+	})
+	return render(request, 'login.htm', context)
+
+def top(request, page):
+	pager = Question.objects.top()
+	context = RequestContext(request, {
+		'popular': popular_tags(),
+		'questions': findPage(pager, page or 1).object_list,
+		'pages_total': pager.num_pages,
+		'whatami': 'top',
+	})
+	return render(request, 'index.htm', context)
+	
+def question(request, question_id, page):
+	q = get_object_or_404(Question, id=question_id)
+	pager = q.get_answers()
+	context = RequestContext(request, {
+		'question': q,
+		'answers': findPage(pager, page or 1),
+		'popular': popular_tags(),
+		'pages_total': pager.num_pages,
+		'whatami': 'question',
+	})
+	return render(request, 'question.htm', context)
+	
+def register(request):
+	regged = False
+	if request.method == "POST":
+		if not request.user.is_authenticated():
+			rForm = RegistrationForm(data=request.POST)
+			profile = rForm.save()
+			profile.user.login()
+			regged = True
+		else:
+			return render(request, 'message.htm',
+				{'message': 'You are logged in already!'})
+	else:
+		rForm = RegistrationForm()
+		regged = False
+	context = RequestContext(request, {
+		'form': rForm,
+		'regged': regged,
+		'popular': popular_tags(),
+	})
+	return render(request, 'register.htm', context)
+	
+def like(request, question_id):
+	get_object_or_404(Question, id=question_id).like()
+	context = RequestContext(request, {
+		'message': 'Question ' + question_id + ' liked successfully!',
+		'popular': popular_tags(),
+	})
+	return render(request, 'message.htm', context)
+	
+def dislike(request, question_id):
+	get_object_or_404(Question, id=question_id).dislike()
+	context = RequestContext(request, {
+		'message': 'Question ' + question_id + ' disliked successfully!',
+		'popular': popular_tags(),
+	})
+	return render(request, 'message.htm', context)
+	
+def tag(request, htag, page):
+	pager = Question.objects.by_tag(htag)
+	context = RequestContext(request, {
+		'questions': pager.page(page or 1).object_list,
+		'pages_total': pager.num_pages,
+		'popular': popular_tags(),
+		'whatami': 'tag',
+		'hashtag': htag,
+	})
+	return render(request, 'tag.htm', context)
+
+
+
+
+
+##helpers go here
+
+def save_question_from_form(qForm, user):
+	if qForm.is_valid():
+	    title = qForm.cleaned_data['title']
+	    text = qForm.cleaned_data['text']
+	    date = datetime.now()
+	    author = user
+	    q = Question(title=title, text=text,
+	    	timeStamp=date
+	    	#author=Profile.objects.get(user=author.id).id
+	    )
+	    q.save()
+	    for tag in qForm.cleaned_data['tags']:
+	    	try:
+	    		htag = Hashtag.objects.get(tag=tag)
+	    		q.hashtags.add(htag)
+	    	except Hashtag.DoesNotExist:
+	    		htag = Hashtag(tag=tag)
+	    		htag.save()
+	    		q.hashtags.add(htag)
+
+	    q.save()
+	    return True
+	else:
+		return False

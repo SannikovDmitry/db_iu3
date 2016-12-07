@@ -1,0 +1,75 @@
+{% extends 'base.htm' %}
+{% block content%}
+<div class="col-md-9">
+		<div class="row ask-question">
+					<div class="col-md-2">
+						<img src="http://lorempixel.com/60/60/" class="img-circle"></br>
+						<p>Dr. Pepper</p>
+						<button class="btn btn-success" type="button" onclick="location = '{% url 'like' question_id=question.id %}';">
+							L  <span class="badge">{{question.likes}}</span>
+						</button>
+						<button class="btn btn-danger" type="button" onclick="location = '{% url 'dislike' question_id=question.id %}';">
+							D  <span class="badge">{{question.dislikes}}</span>
+						</button>
+					</div>
+					<div class="col-md-10">
+						<a class="question-name" href="{% url 'question' question.id %}">{{ question.title }}</a>
+						<p class="question-text">
+							{{question.text}}
+						</p>
+						<br>
+					</p>
+					<p><a class="question-footer" href="{% url 'question' question_id=question.id %}#answer-form">Answer ({{question.answerCount}})</a>
+						Tags:
+							{% for tag in question.hashtags.all %}
+							{%if tag.tag != " " and tag.tag != "" %} 
+								<a class = "td" href="{{tag.link}}">{{tag}}</a>
+							{%else%}
+								(none)
+							{%endif%}
+							{% endfor %}
+							{% if question.hashtags.count == 0 %}
+								(none)
+							{%endif%}
+					</div>
+				</div>
+			{% for answer in answers %}
+			
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="media">
+						<div class="media-left">
+							<a href="#"><img src="holder.js/64x64" alt="Avatar here" class="img-circle"></a>
+						</div>
+						<div class="media-body">
+							<h4 class="media-heading">{{answer.title}}<small> by username</small></h4>
+							{{answer.text}}
+						</div>
+					</div>
+				</div>
+				<div class="panel-footer">
+					<button class="btn btn-success" type="button">
+						Like! <span class="badge">{{ answer.likes }}</span>
+					</button>
+					<button class="btn btn-danger" type="button">
+						Dislike :( <span class="badge">{{ answer.dislikes }}</span>
+					</button>
+					<button class="btn btn-success pull-right">
+						He's right!
+					</button>
+				</div>
+			</div>
+			{% endfor %}
+			{% include 'pagination.htm' with paginated=answers %}
+			<hr></hr>
+			
+			<form class="form-group">
+				<textarea class="form-control res-vert" rows="6" placeholder="Your answer...">{{form.textarea}}</textarea>
+				<br>
+				<button class="btn btn-success form-control">
+					Submit
+				</button>
+			</form>
+			<a name="answer-form"></a>
+		</div>
+{% endblock %}

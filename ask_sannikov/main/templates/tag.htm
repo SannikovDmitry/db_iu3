@@ -1,0 +1,21 @@
+{%extends 'index.htm'%}
+
+{% block pagination %}
+	<ul class="pagination">
+	<li><a href={% url 'tag' htag=hashtag page=1 %}>1</a></li>
+{% if pages_total > 1 %}
+	<li><a href={% url 'tag' htag=hashtag page=2 %}>2</a></li>
+{% endif %}
+{% if pages_total > 2 %}
+	<li><a href={% url 'tag' htag=hashtag page=3 %}>3</a></li>
+{% endif %}
+{% if pages_total > 3 %}
+	<li><a href={% url 'tag' htag=hashtag page=4 %}>4</a></li>
+{% endif %}
+{% if pages_total > 5 %}
+	<li><a href="#">...</a></li>
+{% elif pages_total > 4 %}
+	<li><a href={% url 'tag' htag=hashtag page=pages_total %}>{{ pages_total }}</a></li>
+{% endif %}
+</ul>
+{% endblock %}

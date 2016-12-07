@@ -1,0 +1,45 @@
+{% extends 'base.htm' %}
+{% block content %}
+{% if user.is_authenticated %}
+<div class="col-md-9">
+    <h1>Вы уже зарегистрированы и авторизованы.</h1>
+</div>
+{% else %}
+{% if registered %}
+    <strong>Спасибо за регистрацию!</strong>
+    <a href="/">Вернуться на главную страницу.</a><br/>
+{% else %}
+<div class="col-md-9">
+    <h1>Регистрация</h1>
+    <form class="form-horizontal" id="user_form" method="post" action="/registration/" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="form-1-field" class="col-sm-2 control-label">Ваш логин</label>
+            <div class="col-sm-10" id="form-1-field">{{user_form.username}}</div>
+        </div>
+
+        <div class="form-group">
+            <label for="form-2-field" class="col-sm-2 control-label">Ваша почта</label>
+            <div class="col-sm-10" id="form-2-field">{{user_form.email}}</div>
+        </div>
+        <div class="form-group">
+            <label for="form-3-field" class="col-sm-2 control-label">Ваш пароль</label>
+            <div class="col-sm-10" id="form-3-field">{{user_form.password}}</div>
+        </div>
+        <div class="form-group">
+            <label for="form-4-field" class="col-sm-2 control-label">Ваша страница</label>
+            <div class="col-sm-10" id="form-4-field">{{profile_form.website}}</div>
+        </div>
+        <div class="form-group">
+            <label for="form-5-field" class="col-sm-2 control-label">Ваш аватар</label>
+            <div class="col-sm-10" id="form-5-field">{{profile_form.picture}}</div>
+        </div>
+
+        <div class="col-sm-offset-2">
+            <button class="btn btn-primary" type=submit>Зарегистрироваться</button>
+        </div>
+    </form>
+</div>
+{% endif %}
+{% endif %}
+{% endblock %}

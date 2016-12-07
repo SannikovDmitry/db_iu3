@@ -1,0 +1,35 @@
+@media (min-width: 768px) {
+	.navbar-center {
+	  width: 25%;
+	  text-align: center;
+	}
+	.navbar-center > li {
+	  float: none;
+	  display: inline-block;
+	}
+}
+
+@media (max-width: 768px) {
+	.user-info {
+	  width: 100%;
+	  text-align: center;
+	}
+	.user-info > li {
+	  float: none;
+	  display: inline-block;
+	}
+}
+
+@media (max-width: 768px) {
+	.sm-no-scroll {
+		overflow-x: hidden; 
+	}
+}
+
+.wd-tertiary {
+	width: 30%;
+}
+
+.res-vert {
+	resize: vertical;
+}
