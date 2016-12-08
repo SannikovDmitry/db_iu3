@@ -9,7 +9,7 @@ from django.forms import ModelForm
 class UserProfile(models.Model):
 	user = models.OneToOneField(User)
 	website = models.URLField(blank=True)
-	picture = models.ImageField(upload_to=' /static/profile_images', blank=True)
+	picture = models.ImageField(upload_to='static/profile_images', blank=True)
 	def __unicode__(self):
 		return self.user.username
 
@@ -52,9 +52,6 @@ class Question(models.Model):
 	answerCount = models.IntegerField(default = 0)
 	objects = QuestionManager()
 
-	def __unicode__(self):
-		return self.title
-
 	def like(self):
 		self.likes = self.likes + 1
 		self.save()
@@ -67,8 +64,11 @@ class Question(models.Model):
 		return Paginator(Answer.objects.filter(
 			question__id = self.id).order_by('-likes'), 5)
 
-def get_author(request):
-	author = Question.objects.get(author = request.user)
+	def __unicode__(self):
+		return self.title
+
+def authors():
+	author = Question.objects.all()
 	return author
 
 class Answer(models.Model):

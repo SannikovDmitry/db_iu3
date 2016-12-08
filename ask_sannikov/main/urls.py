@@ -7,21 +7,9 @@ urlpatterns = [
         views.index,
         name='/'
         ),
-    url(r'^index/(?P<page>\d+)?$',
+    url(r'^\index/(?P<page>\d+)?$',
         views.index,
         name='index'
-        ),
-    url(r'^login/$',
-        views.user_login,
-        name='user_login'
-        ),
-    url(r'^registration/$',
-        views.registration,
-        name='registration'
-        ),
-    url(r'^settings/$',
-        views.settings,
-        name='settings'
         ),
     url(r'^like/(?P<question_id>[0-9]+)$',
         views.like,
@@ -47,11 +35,21 @@ urlpatterns = [
         views.top,
         name='top'
         ),
-    url(r'^tag/(?P<htag>[a-zA-Z0-9]+)/(?P<page>[0-9]+)?$',
-        views.tag,
-        name='tag'
+    url(r'^tag/(?P<htag>[a-zA-Z0-9]+)/(?P<page>[0-9]+)?$', views.tag, name='tag'),
+    url(r'^login/$',
+        views.user_login,
+        name='user_login'
         ),
-    url (r'^change-password/$',
+    url(r'^registration/$',
+        views.registration,
+        name='registration'
+        ),
+    url(r'^settings/$',
+        views.settings,
+        name='settings'
+        ),
+    url (
+        r'^change-password/$',
         auth_views.password_change,
         {'template_name': 'change-password.html'}
         ),

@@ -8,7 +8,7 @@ from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 
 from forms import QuestionForm, AnswerForm, UserForm, UserProfileForm, ChangePasswordForm
-from models import Question, Answer, Hashtag, popular_tags, findPage, UserProfile, Paginator, get_author
+from models import Question, Answer, Hashtag, popular_tags, findPage, UserProfile, Paginator, authors
 from django.contrib.auth import authenticate, login
 
 # Create your views here.
@@ -18,15 +18,15 @@ from django.contrib.auth import authenticate, login
 # View index page
 
 def index(request, page):
-    pager = Question.objects.index()
+    all_entries_UserProfiles = UserProfile.objects.all()
     if request.user.is_anonymous():
         return render(request, 'index.htm', {'login': 'user', 'flag':'true'})
     else:
         return render(request, 'index.htm', {
             'popular': popular_tags(),
-            'questions': findPage(pager, page or 1),
-            'pages_total': pager.num_pages,
-            'whatami': 'index',
+            'questions': findPage(Question.objects.index(), page or 1),
+            'pages_total': Question.objects.index().num_pages,
+            'whatami': Question.objects.index(),
     })
 def user_login(request):
     if request.method == 'POST':
@@ -134,14 +134,13 @@ def dislike(request, question_id):
 
 def tag(request, htag, page):
     pager = Question.objects.by_tag(htag)
-    context = RequestContext(request, {
+    return render(request, 'tag.htm', {
         'questions': pager.page(page or 1).object_list,
         'pages_total': pager.num_pages,
         'popular': popular_tags(),
         'hashtag': htag,
         'whatami': 'tag',
     })
-    return render(request, 'tag.htm', {'context': context})
 
 def save_question_from_form(qForm, user):
     if qForm.is_valid():
@@ -150,8 +149,7 @@ def save_question_from_form(qForm, user):
         date = datetime.now()
         author = user
         q = Question(title=title, text=text,
-            timeStamp=date
-            #author=Profile.objects.get(user=author.id).id
+            timeStamp=date, author = UserProfile.objects.get(user_id = user.id)
         )
         q.save()
         for tag in qForm.cleaned_data['tags']:
@@ -167,6 +165,8 @@ def save_question_from_form(qForm, user):
         return True
     else:
         return False
+
+
 
 def logout (request):
     auth.logout(request)
